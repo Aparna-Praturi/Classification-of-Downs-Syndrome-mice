@@ -59,7 +59,7 @@ The goal is to build an **explainable ML model** that reveals how molecular-leve
 | **LightGBM** | 0.66 | 0.59 | ~0.64 | Robust tree-based model |
 | **Logistic Regression** | 0.60 | 0.55 | ~0.58 | Linear baseline |
 
-![Placeholder: insert normalized confusion matrix here](results/combined%20cm.png)
+![Placeholder: insert normalized confusion matrix here](results/combined_cm.png))
 
 ---
 
