@@ -1,4 +1,4 @@
-#  Mice Protein Expression — Classifying Genotype, Treatment & Behavior
+#  MolecuLearn: Interpretable ML of Protein Signatures in Down’s Syndrome — Classifying Genotype, Treatment & Behavior
 
 > Machine learning pipeline to recognize Down’s Syndrome and treatment effects in mice based on protein expression data.  
 > Combines machine learning, hyperparameter optimization, and biological interpretability (SHAP, PCA/UMAP, t-SNE, PDP).
@@ -13,7 +13,7 @@ This project analyzes **mice protein expression** data to classify subjects by t
 - **Behavioral conditioning** (Context-shock or Shock-context)
 
 Dataset source: [UCI ML Repository – *Mice Protein Expression Dataset*](https://archive.ics.uci.edu/ml/datasets/Mice+Protein+Expression)  
-Original study: *Higuera et al., PLOS ONE (2015)*
+Original study: *Higuera et al., PLOS ONE (2015)(https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0129126)
 
 The goal is to build an **explainable ML model** that reveals how molecular-level protein differences encode genotype and treatment outcomes.
 
@@ -146,9 +146,87 @@ After Memantine + learning stimulation:
 - In control mice, **SOD1 decreases sharply during learning**, indicating lowered oxidative stress.  
 - In Ts65Dn mice, **SOD1 remains high**, even with learning — showing persistent redox imbalance.  
 
-> Memantine slightly normalizes this pattern but does not fully restore oxidative adaptability.
+### Interpretation by Protein:
+
+![Placeholder: insert SOD1 histogram comparison here](results/partial_dependency.png)
+1️⃣ APP_N (Amyloid Precursor Protein)
+
+For control groups (c-*): increasing APP_N → decreases model probability.
+
+For Ts65Dn groups (t-*): increasing APP_N → increases probability.
+
+✅ Interpretation:
+
+APP overexpression is characteristic of Ts65Dn (Down’s) and detrimental in controls.
+The model learns that higher APP_N values push classification toward Down’s groups, consistent with its chromosome 21 triplication origin.
+
+2️⃣ SOD1_N (Superoxide Dismutase 1)
+
+Low to mid SOD1 levels correspond to control-like predictions.
+
+Higher SOD1 expression increases predicted probability of Down’s / stress-related states.
+
+✅ Interpretation:
+
+SOD1 behaves as an oxidative stress marker — higher values align with the Ts65Dn phenotype.
+In control groups, learning conditions reduce SOD1 dependency (flatter slopes), suggesting oxidative stabilization.
+
+3️⃣ pCAMKII_N (Phosphorylated CaMKII)
+
+Negative slope for all groups → higher pCAMKII_N lowers Down’s likelihood.
+
+Most pronounced in treated groups (t-SC-m, t-CS-m).
+
+✅ Interpretation:
+
+pCAMKII is a learning-associated kinase — its activation indicates healthy synaptic plasticity.
+The model identifies higher pCAMKII_N as a protective signature (closer to control profiles).
+Memantine-treated Ts65Dn mice show mild recovery of this pattern, aligning with observed synaptic rescue.
+
+4️⃣ CaNA_N (Calcineurin A)
+
+Positive slope in controls; negative slope in Ts65Dn conditions.
+
+Indicates opposite regulatory roles depending on genotype.
+
+✅ Interpretation:
+
+CaNA supports calcium-dependent dephosphorylation and synaptic resetting.
+Control mice benefit from higher CaNA levels post-learning, but Ts65Dn mice show inverse coupling — suggesting impaired calcium homeostasis.
+After Memantine, slope flattens → partial normalization.
+
+5️⃣ AKT_N (Protein Kinase B)
+
+Generally positive slope: higher AKT_N increases class probability across both genotypes.
+
+But amplitude smaller in control conditions.
+
+✅ Interpretation:
+
+AKT activity reflects metabolic and growth signaling.
+Overactivation is a known feature in Down’s models; the model’s sensitivity shows that elevated AKT_N pushes predictions toward Ts65Dn classes.
+Memantine dampens this dependency slightly (flatter curves).
+
+###  Cross-Condition Insights
+
+| **Protein** | **Control (c-*)** | **Ts65Dn (t-*)** | **Biological Implication** |
+|--------------|------------------|------------------|-----------------------------|
+| **APP_N** | ↓ probability | ↑ probability | Overexpression drives Down’s classification |
+| **SOD1_N** | ↓ probability | ↑ probability | Oxidative stress marker |
+| **pCAMKII_N** | ↓ probability | ↓ probability | Low levels impair plasticity; higher = healthier |
+| **CaNA_N** | ↑ probability | ↓ probability | Reversed calcium regulation |
+| **AKT_N** | ↑ probability (mild) | ↑ probability (strong) | Hypermetabolic state in Down’s |
 
 
+✅ Interpretation summary:
+
+These PDPs reveal nonlinear, directionally consistent patterns:
+
+APP, SOD1, and AKT promote Down’s-like classification.
+
+pCAMKII and CaNA promote Control-like classification.
+
+Memantine treatment smooths these transitions — indicating biological normalization.
 
 
 ---
@@ -205,3 +283,7 @@ Python 3.10 • scikit-learn • Optuna • LightGBM • SHAP • Matplotlib •
 Aparna Praturi, Ph.D.
 Physicist → Data Scientist
 Exploring biological insight through interpretable AI
+🔗 Connect with me:  
+- [GitHub](https://github.com/Aparna-Praturi)  
+- [LinkedIn](https://www.linkedin.com/in/aparna-praturi/)  
+- [Email](mailto:aparnaps777@gmail.com)
